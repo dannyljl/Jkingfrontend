@@ -1,8 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import {GuildComponent} from './guild/guild.component';
 
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'guild',
+    pathMatch: 'full'
+  },
+  {
+    path: 'guild',
+    component: GuildComponent
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
