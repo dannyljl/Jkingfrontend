@@ -1,27 +1,23 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {WebSocketAPI} from './WebSocketAPI';
+import {FormBuilder} from '@angular/forms';
 
 @Component({
   selector: 'app-guild',
   templateUrl: './guild.component.html',
-  styleUrls: ['./guild.component.css']
+  styleUrls: ['./guild.component.css'],
 })
 export class GuildComponent implements OnInit {
   title = 'angular9-springboot-websocket';
-  input;
   webSocketAPI: WebSocketAPI;
-  greeting = [];
-  name: string;
+  chatForm;
 
-  get getGreeting(){
-    return this.greeting;
-  }
+  constructor(private formBuilder: FormBuilder) {this.chatForm = this.formBuilder.group({
+    message: ''}); }
 
-  set setGreeting(greeting){
-    this.greeting = greeting;
-  }
   ngOnInit() {
-    this.webSocketAPI = new WebSocketAPI(new GuildComponent());
+    this.webSocketAPI = new WebSocketAPI(new GuildComponent(this.formBuilder));
+    this.connect();
   }
 
   connect(){
@@ -32,16 +28,8 @@ export class GuildComponent implements OnInit {
     this.webSocketAPI._disconnect();
   }
 
-  sendMessage(){
-    this.webSocketAPI._send(this.name);
-  }
-
-  handleMessage(message) {
-    this.title = message;
-    this.greeting.push(message);
-    for(let msg in this.greeting){
-      console.log(msg.toString());
-    }
+  sendMessage(message){
+    this.webSocketAPI._send(message);
   }
 
 }

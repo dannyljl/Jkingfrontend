@@ -1,15 +1,16 @@
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { GuildComponent } from './guild.component';
+import {OnInit} from '@angular/core';
 
-export class WebSocketAPI {
+export class WebSocketAPI{
   webSocketEndPoint = 'http://localhost:8080/ws';
   topic = '/topic/greetings';
   stompClient: any;
+  public messages: any = [];
   guildcomponent: GuildComponent;
   constructor(appComponent: GuildComponent){
     this.guildcomponent = appComponent;
-    this._connect();
   }
 
   _connect() {
@@ -20,8 +21,11 @@ export class WebSocketAPI {
     // tslint:disable-next-line:only-arrow-functions
     _this.stompClient.connect({}, function(frame) {
       // tslint:disable-next-line:only-arrow-functions
-      _this.stompClient.subscribe(_this.topic, function(sdkEvent) {
-        _this.onMessageReceived(sdkEvent);
+      _this.stompClient.subscribe(_this.topic, (message) => {
+        if (message.body) {
+          console.log(message.body);
+          _this.messages.push(message.body);
+        }
       });
       // _this.stompClient.reconnect_delay = 2000;
     }, this.errorCallBack);
@@ -49,10 +53,5 @@ export class WebSocketAPI {
   _send(message) {
     console.log('calling logout api via web socket');
     this.stompClient.send('/app/hello', {}, JSON.stringify(message));
-  }
-
-  onMessageReceived(message) {
-    console.log('Message Recieved from Server :: ' + message);
-    this.guildcomponent.handleMessage(JSON.stringify(message.body));
   }
 }
