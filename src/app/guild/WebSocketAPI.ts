@@ -2,9 +2,11 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { GuildComponent } from './guild.component';
 import {OnInit} from '@angular/core';
+import {HelloMessage} from '../model/HelloMessage';
+import {User} from '../model/User';
 
 export class WebSocketAPI{
-  webSocketEndPoint = 'http://localhost:8080/ws';
+  webSocketEndPoint = 'http://localhost:8081/ws';
   topic = '/topic/greetings';
   stompClient: any;
   public messages: any = [];
@@ -50,7 +52,7 @@ export class WebSocketAPI{
    * Send message to sever via web socket
    * @param {*} message
    */
-  _send(message) {
+  _send(message: HelloMessage) {
     console.log('calling logout api via web socket');
     this.stompClient.send('/app/hello', {}, JSON.stringify(message));
   }

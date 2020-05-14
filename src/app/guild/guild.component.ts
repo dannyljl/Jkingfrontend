@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {WebSocketAPI} from './WebSocketAPI';
 import {FormBuilder} from '@angular/forms';
+import {HelloMessage} from '../model/HelloMessage';
 
 @Component({
   selector: 'app-guild',
@@ -29,7 +30,11 @@ export class GuildComponent implements OnInit {
   }
 
   sendMessage(message){
-    this.webSocketAPI._send(message);
+    const helloMessage = new HelloMessage();
+    helloMessage.message = message;
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    helloMessage.messageOwner = user;
+    this.webSocketAPI._send(helloMessage);
   }
 
 }

@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   ) {
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/guild']);
     }
   }
 
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     });
 
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/guild';
   }
 
   // convenience getter for easy access to form fields
@@ -50,18 +50,19 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
-    this.user.username = this.f.username.value;
-    this.user.password = this.f.password.value;
     this.loading = true;
-    this.authenticationService.login(this.user)
+    console.log(this.user);
+    this.authenticationService.login(this.f.username.value,
+    this.f.password.value)
       .pipe(first())
       .subscribe(
         data => {
-          this.router.navigate([this.returnUrl]);
+          // this.router.navigate([this.returnUrl]);
         },
         error => {
           // this.alertService.error(error);
           this.loading = false;
         });
+    this.router.navigate(['/guild']);
   }
 }
