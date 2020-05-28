@@ -11,6 +11,9 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {JwtInterceptor} from './helpers/jwt.interceptor';
 import {TopBarComponent} from './top-bar/top-bar.component';
 import {LogoutComponent} from './logout/logout.component';
+import { HomeComponent } from './home/home.component';
+import { CreateGuildComponent } from './create-guild/create-guild.component';
+import { VisitGuildComponent } from './visit-guild/visit-guild.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,10 @@ import {LogoutComponent} from './logout/logout.component';
     LoginComponent,
     TopBarComponent,
     LogoutComponent,
-    RegisterComponent
+    RegisterComponent,
+    HomeComponent,
+    CreateGuildComponent,
+    VisitGuildComponent
   ],
   imports: [
     BrowserModule,

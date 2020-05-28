@@ -4,6 +4,9 @@ import {GuildComponent} from './guild/guild.component';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {LogoutComponent} from './logout/logout.component';
+import {HomeComponent} from './home/home.component';
+import {VisitGuildComponent} from './visit-guild/visit-guild.component';
+import {CreateGuildComponent} from './create-guild/create-guild.component';
 
 
 const routes: Routes = [
@@ -15,6 +18,18 @@ const routes: Routes = [
   {
     path: 'guild',
     component: GuildComponent
+  },
+  {
+    path: 'createguild',
+    component: CreateGuildComponent
+  },
+  {
+    path: 'visitguild',
+    component: VisitGuildComponent
+  },
+  {
+    path: 'home',
+    component: HomeComponent
   },
   {
     path: 'logout',

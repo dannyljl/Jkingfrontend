@@ -28,6 +28,17 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
+  update(user: User) {
+    return this.http.put<any>('http://localhost:8080/user', user, httpOptions)
+      .pipe(map(receivedUser => {
+        console.log(receivedUser);
+        // store user details and jwt token in local storage to keep user logged in between page refreshes
+        localStorage.setItem('currentUser', JSON.stringify(receivedUser));
+        this.currentUserSubject.next(receivedUser);
+        return receivedUser;
+      }));
+  }
+
   login(username, password) {
     return this.http.post<any>('http://localhost:8080/login', { username, password}, httpOptions)
       .pipe(map(receivedUser => {
