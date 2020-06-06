@@ -11,7 +11,7 @@ export class TopBarComponent implements OnInit {
 
   user: User;
 
-  constructor(public authenticationService: AuthenticationService) {this.user = authenticationService.currentUserValue }
+  constructor(public authenticationService: AuthenticationService) {this.user = authenticationService.currentUserValue; }
 
   ngOnInit(): void {
   }

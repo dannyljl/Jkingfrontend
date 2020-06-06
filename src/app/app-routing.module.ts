@@ -24,7 +24,7 @@ const routes: Routes = [
     component: CreateGuildComponent
   },
   {
-    path: 'visitguild',
+    path: 'guild/:guildName',
     component: VisitGuildComponent
   },
   {

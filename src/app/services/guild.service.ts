@@ -20,6 +20,10 @@ export class GuildService {
   }
 
   createGuild(guild: Guild) {
-    return this.http.post('http://localhost:8081/guild', guild, httpOptions);
+    return this.http.post<Guild>('http://localhost:8081/guild', guild, httpOptions);
+  }
+
+  getGuild(guildName: string){
+    return this.http.get<Guild>('http://localhost:8081/guild/' + guildName);
   }
 }

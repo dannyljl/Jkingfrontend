@@ -7,9 +7,6 @@
 <a [routerLink]="['/createguild']">
   <h1>create Guild</h1>
 </a>
-<a [routerLink]="['/visitguild']">
-  <h1>visit Guild</h1>
-</a>
 <div *ngIf="!authenticationService.currentUserValue">
   <a [routerLink]="['/login']">
     <h2>Login</h2>

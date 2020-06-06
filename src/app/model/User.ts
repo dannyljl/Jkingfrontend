@@ -5,4 +5,5 @@ export class User {
   lastName: string;
   token: string;
   guildname: string;
+  guildId: number;
 }

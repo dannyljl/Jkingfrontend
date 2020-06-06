@@ -1,5 +1,8 @@
 <form [formGroup]="chatForm" (ngSubmit)="sendMessage(chatForm.value)">
 
+  <h1>
+    send guild message
+  </h1>
   <div>
     <label for="message">
       message
@@ -11,7 +14,28 @@
 
 </form>
 
+<h1>
+  guild messages:
+</h1>
 <div class="item" *ngFor="let item of webSocketAPI.messages">
   <span>{{ item }} </span>
+</div>
+
+<div>
+  <h1>
+    Find other guilds:
+  </h1>
+  <form [formGroup]="findGuildForm" (ngSubmit)="findGuildByName(findGuildForm.value)">
+
+    <div>
+      <label for="findguild">
+        Find a new guild
+      </label>
+      <input id="findguild" type="text" formControlName="findguild">
+    </div>
+
+    <button class="button" type="submit">Find guild by name</button>
+
+  </form>
 </div>
 <router-outlet></router-outlet>

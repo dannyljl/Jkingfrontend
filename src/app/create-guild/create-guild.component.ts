@@ -48,11 +48,15 @@ export class CreateGuildComponent implements OnInit {
     this.guild = this.createForm.value;
     this.guild.leader = this.authenticationService.currentUserValue;
     this.loading = true;
+    const user = this.authenticationService.currentUserValue;
     console.log(this.guild);
     this.guildService.createGuild(this.guild)
       .pipe(first())
       .subscribe(
         data => {
+          user.guildId = data.id;
+          user.guildname = data.name;
+          localStorage.setItem('currentUser', JSON.stringify(user));
           // this.alertService.success('Registration successful', true);
           this.router.navigate(['/guild']);
         },
