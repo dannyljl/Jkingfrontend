@@ -1,7 +1,10 @@
+<div *ngIf="loading">
 <form [formGroup]="chatForm" (ngSubmit)="sendMessage(chatForm.value)">
-
+<div>
+  <h1>Welcome to the guild page of {{this.guild.name}}</h1>
+</div>
   <h1>
-    send guild message
+   send guild message
   </h1>
   <div>
     <label for="message">
@@ -39,3 +42,4 @@
   </form>
 </div>
 <router-outlet></router-outlet>
+</div>

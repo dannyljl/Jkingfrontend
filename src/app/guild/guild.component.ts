@@ -5,7 +5,10 @@ import {HelloMessage} from '../model/HelloMessage';
 import {BehaviorSubject} from 'rxjs';
 import {User} from '../model/User';
 import {AuthenticationService} from '../services/authentication.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {first} from 'rxjs/operators';
+import {GuildService} from '../services/guild.service';
+import {Guild} from '../model/Guild';
 
 @Component({
   selector: 'app-guild',
@@ -17,17 +20,30 @@ export class GuildComponent implements OnInit {
   webSocketAPI: WebSocketAPI;
   chatForm;
   findGuildForm;
-
+  guild: Guild;
+  loading = false;
 
   // tslint:disable-next-line:max-line-length
-  constructor(private formBuilder: FormBuilder, private router: Router, private authenticationService: AuthenticationService) {
+  constructor(private formBuilder: FormBuilder,
+              private router: Router,
+              private authenticationService: AuthenticationService,
+              private route: ActivatedRoute,
+              private guildservice: GuildService) {
       this.findGuildForm = this.formBuilder.group({findguild: ''}),
       this.chatForm = this.formBuilder.group({message: ''});
   }
 
   ngOnInit() {
-    this.webSocketAPI = new WebSocketAPI(new GuildComponent(this.formBuilder, this.router, this.authenticationService));
+    this.route.paramMap.subscribe(params => {
+      this.guildservice.getGuild(params.get('guildName'))
+        .pipe(first())
+        .subscribe(
+          data => { this.guild = data;
+          });
+    });
+    this.webSocketAPI = new WebSocketAPI(this, this.authenticationService);
     this.connect();
+    this.loading = true;
   }
 
   connect(){
@@ -41,14 +57,15 @@ export class GuildComponent implements OnInit {
   sendMessage(message){
     const helloMessage = new HelloMessage();
     helloMessage.message = message;
-    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const user = this.authenticationService.currentUserValue;
     helloMessage.messageOwner = user;
     this.webSocketAPI._send(helloMessage);
   }
 
   findGuildByName(findguild){
-    console.log(findguild.findguild);
-    this.router.navigate(['/guild/' + findguild.findguild, findguild]);
+    console.log(findguild);
+    this.router.navigate(['/guild/' + findguild.findguild]);
+    this.ngOnInit();
   }
 
 }

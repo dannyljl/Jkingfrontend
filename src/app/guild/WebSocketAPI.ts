@@ -4,14 +4,17 @@ import { GuildComponent } from './guild.component';
 import {OnInit} from '@angular/core';
 import {HelloMessage} from '../model/HelloMessage';
 import {User} from '../model/User';
+import {AuthenticationService} from '../services/authentication.service';
+import {environment} from '../../environments/environment';
 
 export class WebSocketAPI{
-  webSocketEndPoint = 'http://localhost:8081/ws';
-  topic = '/topic/greetings';
+  webSocketEndPoint = `${environment.guildUrl}/ws?access_token=` + this.authenticationService.currentUserValue.access_token;
+  topic = '/topic/greetings/';
   stompClient: any;
-  public messages: any = [];
+  public messages: HelloMessage[] = [];
   guildcomponent: GuildComponent;
-  constructor(appComponent: GuildComponent){
+  constructor(appComponent: GuildComponent,
+              private authenticationService: AuthenticationService){
     this.guildcomponent = appComponent;
   }
 
@@ -23,7 +26,7 @@ export class WebSocketAPI{
     // tslint:disable-next-line:only-arrow-functions
     _this.stompClient.connect({}, function(frame) {
       // tslint:disable-next-line:only-arrow-functions
-      _this.stompClient.subscribe(_this.topic, (message) => {
+      _this.stompClient.subscribe(_this.topic + _this.authenticationService.currentUserValue.guildName, (message) => {
         if (message.body) {
           console.log(message.body);
           _this.messages.push(message.body);
@@ -54,6 +57,6 @@ export class WebSocketAPI{
    */
   _send(message: HelloMessage) {
     console.log('calling logout api via web socket');
-    this.stompClient.send('/app/hello', {}, JSON.stringify(message));
+    this.stompClient.send('/app/hello/' + this.authenticationService.currentUserValue.guildName, {}, JSON.stringify(message));
   }
 }

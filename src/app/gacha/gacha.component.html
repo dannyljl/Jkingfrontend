@@ -1,0 +1,17 @@
+<form [formGroup]="gachaForm" (ngSubmit)="onDraw(gachaForm.value)">
+  <div>
+    <h1>Welcome to the draw page!</h1>
+  </div>
+  <div>
+    <label for="maxNumber">
+      insert max number
+    </label>
+    <input id="maxNumber" type="number" formControlName="maxNumber">
+  </div>
+
+  <button class="button" type="submit">Draw!</button>
+</form>
+
+<div>
+  your draw result is : {{gachaNumber}}
+</div>

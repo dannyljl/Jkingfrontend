@@ -4,6 +4,7 @@ import {map} from 'rxjs/operators';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {User} from '../model/User';
 import {Router} from '@angular/router';
+import {environment} from '../../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -20,27 +21,31 @@ export class AuthenticationService {
   public currentUser: Observable<User>;
 
   constructor(private http: HttpClient, private router: Router) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
-    this.currentUser = this.currentUserSubject.asObservable();
+    this.updatelocal();
   }
 
   public get currentUserValue(): User {
     return this.currentUserSubject.value;
   }
 
+  public updatelocal(){
+    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
+
   update(user: User) {
-    return this.http.put<any>('http://localhost:8080/user', user, httpOptions)
+    return this.http.post<User>(`${environment.authUrl}/user/update`, user, httpOptions)
       .pipe(map(receivedUser => {
-        console.log(receivedUser);
+        console.log('updated user =' + receivedUser);
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(receivedUser));
-        this.currentUserSubject.next(receivedUser);
+        this.updatelocal();
         return receivedUser;
       }));
   }
 
   login(username, password) {
-    return this.http.post<any>('http://localhost:8080/login', { username, password}, httpOptions)
+    return this.http.post<any>(`${environment.authUrl}/users/login`, { username, password}, httpOptions)
       .pipe(map(receivedUser => {
         console.log(receivedUser);
         // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -51,7 +56,7 @@ export class AuthenticationService {
   }
   logout() {
     // remove user from local storage and set current user to null
-    localStorage.removeItem('user');
+    localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
     this.router.navigate(['/account/login']);
   }

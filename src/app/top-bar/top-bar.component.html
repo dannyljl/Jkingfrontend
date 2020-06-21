@@ -1,11 +1,14 @@
 <a [routerLink]="['/home']">
   <h1>Home</h1>
 </a>
-<a [routerLink]="['/guild']">
+<a [routerLink]="['/guild',user.guildName]">
   <h1>Guild</h1>
 </a>
 <a [routerLink]="['/createguild']">
   <h1>create Guild</h1>
+</a>
+<a [routerLink]="['/gacha']">
+  <h1>draw!</h1>
 </a>
 <div *ngIf="!authenticationService.currentUserValue">
   <a [routerLink]="['/login']">

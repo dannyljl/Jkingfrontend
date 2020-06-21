@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {first} from 'rxjs/operators';
 import {User} from '../model/User';
+import {GuildService} from '../services/guild.service';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
+    private guildService: GuildService
   ) {
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
@@ -37,7 +39,7 @@ export class LoginComponent implements OnInit {
     });
 
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/guild';
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/home';
   }
 
   // convenience getter for easy access to form fields
@@ -57,12 +59,19 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
+          this.user = data;
           // this.router.navigate([this.returnUrl]);
         },
         error => {
           // this.alertService.error(error);
           this.loading = false;
         });
-    this.router.navigate(['/guild']);
+    this.guildService.getUserGuild(this.user.id).pipe().subscribe( data => {
+        this.user.guildId = data.id;
+        this.user.guildName = data.name;
+        console.log('guild =' + data);
+        localStorage.setItem('currentUser', JSON.stringify(this.user));
+    });
+    this.router.navigate(['/home']);
   }
 }

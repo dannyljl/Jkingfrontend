@@ -4,6 +4,7 @@ import {AuthenticationService} from '../services/authentication.service';
 import {first} from 'rxjs/operators';
 import {UserService} from '../services/user.service';
 import {User} from '../model/User';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ import {User} from '../model/User';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  registerForm: FormGroup;
+  updateForm: FormGroup;
   loading = false;
   submitted = false;
   user: any;
@@ -23,17 +24,18 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.user = this.authenticationService.currentUserValue;
-    this.registerForm = this.formBuilder.group({
+    this.user = null;
+    this.updateForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+    this.loading = true;
   }
 
   // convenience getter for easy access to form fields
-  get f() { return this.registerForm.controls; }
+  get f() { return this.updateForm.controls; }
 
   onSubmit() {
 
@@ -41,14 +43,14 @@ export class HomeComponent implements OnInit {
     // this.alertService.clear();
 
     // stop here if form is invalid
-    if (this.registerForm.invalid) {
+    if (this.updateForm.invalid) {
       return;
     }
 
-    console.log(this.registerForm.value);
-    this.user = this.registerForm.value;
+    console.log(this.updateForm.value);
+    this.user = this.updateForm.value;
     this.user.id = this.authenticationService.currentUserValue.id;
-    this.userService.register(this.user)
+    this.authenticationService.update(this.user)
       .pipe(first())
       .subscribe(
         data => {this.user = data;

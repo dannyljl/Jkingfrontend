@@ -14,6 +14,7 @@ import {LogoutComponent} from './logout/logout.component';
 import { HomeComponent } from './home/home.component';
 import { CreateGuildComponent } from './create-guild/create-guild.component';
 import { VisitGuildComponent } from './visit-guild/visit-guild.component';
+import { GachaComponent } from './gacha/gacha.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { VisitGuildComponent } from './visit-guild/visit-guild.component';
     RegisterComponent,
     HomeComponent,
     CreateGuildComponent,
-    VisitGuildComponent
+    VisitGuildComponent,
+    GachaComponent
   ],
   imports: [
     BrowserModule,

@@ -7,12 +7,13 @@ import {LogoutComponent} from './logout/logout.component';
 import {HomeComponent} from './home/home.component';
 import {VisitGuildComponent} from './visit-guild/visit-guild.component';
 import {CreateGuildComponent} from './create-guild/create-guild.component';
+import {GachaComponent} from './gacha/gacha.component';
 
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'guild',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -25,11 +26,15 @@ const routes: Routes = [
   },
   {
     path: 'guild/:guildName',
-    component: VisitGuildComponent
+    component: GuildComponent
   },
   {
     path: 'home',
     component: HomeComponent
+  },
+  {
+    path: 'gacha',
+    component: GachaComponent
   },
   {
     path: 'logout',

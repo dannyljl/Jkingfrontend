@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {BehaviorSubject} from 'rxjs';
 import {User} from '../model/User';
 import {Guild} from '../model/Guild';
+import {environment} from '../../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -20,10 +21,14 @@ export class GuildService {
   }
 
   createGuild(guild: Guild) {
-    return this.http.post<Guild>('http://localhost:8081/guild', guild, httpOptions);
+    return this.http.post<Guild>(`${environment.guildUrl}/guild`, guild, httpOptions);
   }
 
   getGuild(guildName: string){
-    return this.http.get<Guild>('http://localhost:8081/guild/' + guildName);
+    return this.http.get<Guild>(`${environment.guildUrl}/guild/` + guildName);
+  }
+
+  getUserGuild(id: number){
+    return this.http.post<Guild>(`${environment.guildUrl}/guild/user`, id, httpOptions);
   }
 }

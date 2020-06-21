@@ -12,6 +12,7 @@ import {first} from 'rxjs/operators';
 export class VisitGuildComponent implements OnInit {
 
   guild: Guild;
+  loading = false;
   constructor(
     private route: ActivatedRoute,
     private guildservice: GuildService
@@ -25,6 +26,7 @@ export class VisitGuildComponent implements OnInit {
           data => { this.guild = data;
           });
     });
+    this.loading = true;
   }
 
 }

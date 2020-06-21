@@ -3,7 +3,7 @@ export class User {
   username: string;
   firstName: string;
   lastName: string;
-  token: string;
-  guildname: string;
+  access_token: string;
+  guildName: string;
   guildId: number;
 }

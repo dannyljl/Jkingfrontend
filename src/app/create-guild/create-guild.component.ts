@@ -55,10 +55,11 @@ export class CreateGuildComponent implements OnInit {
       .subscribe(
         data => {
           user.guildId = data.id;
-          user.guildname = data.name;
+          user.guildName = data.name;
           localStorage.setItem('currentUser', JSON.stringify(user));
+          this.authenticationService.updatelocal();
           // this.alertService.success('Registration successful', true);
-          this.router.navigate(['/guild']);
+          this.router.navigate(['/guild/' + this.guild.name]);
         },
         error => {
           // this.alertService.error(error);
