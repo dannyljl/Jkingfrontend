@@ -9,6 +9,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {first} from 'rxjs/operators';
 import {GuildService} from '../services/guild.service';
 import {Guild} from '../model/Guild';
+import {placeholdersToParams} from '@angular/compiler/src/render3/view/i18n/util';
 
 @Component({
   selector: 'app-guild',
@@ -29,20 +30,28 @@ export class GuildComponent implements OnInit {
               private authenticationService: AuthenticationService,
               private route: ActivatedRoute,
               private guildservice: GuildService) {
-      this.findGuildForm = this.formBuilder.group({findguild: ''}),
+      this.findGuildForm = this.formBuilder.group({findguild: ''});
       this.chatForm = this.formBuilder.group({message: ''});
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    let shouldbeGuild = null;
     this.route.paramMap.subscribe(params => {
-      this.guildservice.getGuild(params.get('guildName'))
-        .pipe(first())
-        .subscribe(
-          data => { this.guild = data;
-          });
-    });
-    this.webSocketAPI = new WebSocketAPI(this, this.authenticationService);
-    this.connect();
+        this.guildservice.getGuild(params.get('guildName'))
+          .pipe(first())
+          .subscribe(
+            data => { shouldbeGuild = data;
+            });
+      });
+    await this.delay(500);
+    if (shouldbeGuild != null){
+        this.guild = shouldbeGuild;
+        this.webSocketAPI = new WebSocketAPI(this, this.authenticationService);
+        this.connect();
+      }
+    if (shouldbeGuild == null){
+      window.alert('please join or create a guild');
+    }
     this.loading = true;
   }
 
@@ -66,6 +75,18 @@ export class GuildComponent implements OnInit {
     console.log(findguild);
     this.router.navigate(['/guild/' + findguild.findguild]);
     this.ngOnInit();
+  }
+
+  joinGuild(){
+    this.guildservice.joinGuild(this.authenticationService.currentUserValue.id, this.guild.name).pipe().subscribe( data => {
+      localStorage.setItem('currentUser', JSON.stringify(data));
+      this.authenticationService.updatelocal();
+    });
+  }
+
+  private delay(ms: number)
+  {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
 }

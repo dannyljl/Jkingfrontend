@@ -1,28 +1,35 @@
 <div *ngIf="loading">
-<form [formGroup]="chatForm" (ngSubmit)="sendMessage(chatForm.value)">
-<div>
-  <h1>Welcome to the guild page of {{this.guild.name}}</h1>
-</div>
-  <h1>
-   send guild message
-  </h1>
-  <div>
-    <label for="message">
-      message
-    </label>
-    <input id="message" type="text" formControlName="message">
+  <div *ngIf="this.guild">
+    <form [formGroup]="chatForm" (ngSubmit)="sendMessage(chatForm.value)">
+      <div>
+        <h1>Welcome to the guild page of {{this.guild.name}}</h1>
+      </div>
+      <h1>
+        send guild message
+      </h1>
+      <div>
+        <label for="message">
+          message
+        </label>
+        <input id="message" type="text" formControlName="message">
+      </div>
+
+      <button class="button" type="submit">Send message</button>
+
+    </form>
+
+    <h1>
+      guild messages:
+    </h1>
+    <div class="item" *ngFor="let item of webSocketAPI.messages">
+      <span>{{ item.messageOwner.firstName + ":" }} </span>
+      <span>{{ item.message }} </span>
+    </div>
+    <div>
+      <h1>Join this guild</h1>
+      <button (click)="joinGuild()">Join guild</button>
+    </div>
   </div>
-
-  <button class="button" type="submit">Send message</button>
-
-</form>
-
-<h1>
-  guild messages:
-</h1>
-<div class="item" *ngFor="let item of webSocketAPI.messages">
-  <span>{{ item }} </span>
-</div>
 
 <div>
   <h1>

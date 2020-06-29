@@ -10,7 +10,7 @@ const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
   })
-}
+};
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +26,10 @@ export class GuildService {
 
   getGuild(guildName: string){
     return this.http.get<Guild>(`${environment.guildUrl}/guild/` + guildName);
+  }
+
+  joinGuild(id: number, guildName: string){
+    return this.http.post<User>(`${environment.guildUrl}/guild/` + guildName, id, httpOptions);
   }
 
   getUserGuild(id: number){

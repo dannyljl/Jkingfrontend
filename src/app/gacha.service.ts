@@ -12,6 +12,6 @@ export class GachaService {
   }
 
   getResult(maxnumber: number){
-    return this.http.get<number>('http://20.50.47.124:8081/gacha/' + maxnumber);
+    return this.http.get<number>('http://20.50.11.183:8081/gacha/' + maxnumber);
   }
 }

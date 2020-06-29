@@ -10,7 +10,7 @@ const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
   })
-}
+};
 
 @Injectable({
   providedIn: 'root'
@@ -54,10 +54,18 @@ export class AuthenticationService {
         return receivedUser;
       }));
   }
+
+  delete(id: number) {
+    console.log(id);
+    this.http.delete<boolean>(`${environment.authUrl}/user/${id}`, httpOptions);
+    console.log('does this pass?');
+    this.logout();
+  }
+
   logout() {
     // remove user from local storage and set current user to null
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
-    this.router.navigate(['/account/login']);
+    this.router.navigate(['/login']);
   }
 }

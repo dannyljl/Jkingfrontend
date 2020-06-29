@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  guildUrl: 'http://localhost:8081',
-  authUrl: 'http://localhost:8082'
+  guildUrl: 'http://20.50.11.183:8081',
+  authUrl: 'http://20.50.10.227:8082'
 };
 
 /*

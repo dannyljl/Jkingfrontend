@@ -26,10 +26,10 @@ export class WebSocketAPI{
     // tslint:disable-next-line:only-arrow-functions
     _this.stompClient.connect({}, function(frame) {
       // tslint:disable-next-line:only-arrow-functions
-      _this.stompClient.subscribe(_this.topic + _this.authenticationService.currentUserValue.guildName, (message) => {
+      _this.stompClient.subscribe(_this.topic + _this.guildcomponent.guild.name, (message) => {
         if (message.body) {
           console.log(message.body);
-          _this.messages.push(message.body);
+          _this.messages.push(JSON.parse(message.body));
         }
       });
       // _this.stompClient.reconnect_delay = 2000;
@@ -57,6 +57,6 @@ export class WebSocketAPI{
    */
   _send(message: HelloMessage) {
     console.log('calling logout api via web socket');
-    this.stompClient.send('/app/hello/' + this.authenticationService.currentUserValue.guildName, {}, JSON.stringify(message));
+    this.stompClient.send('/app/hello/' + this.guildcomponent.guild.name, {}, JSON.stringify(message));
   }
 }

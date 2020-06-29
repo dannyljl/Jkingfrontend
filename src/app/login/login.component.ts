@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  user: User = new User();
+  user: User;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.loginForm.controls; }
 
-  onSubmit() {
+  async onSubmit() {
     this.submitted = true;
 
     // stop here if form is invalid
@@ -66,12 +66,24 @@ export class LoginComponent implements OnInit {
           // this.alertService.error(error);
           this.loading = false;
         });
-    this.guildService.getUserGuild(this.user.id).pipe().subscribe( data => {
+    await this.delay(3000);
+    if (this.user != null){
+      this.guildService.getUserGuild(this.user.id).pipe().subscribe( data => {
         this.user.guildId = data.id;
         this.user.guildName = data.name;
         console.log('guild =' + data);
         localStorage.setItem('currentUser', JSON.stringify(this.user));
-    });
-    this.router.navigate(['/home']);
+        this.authenticationService.updatelocal();
+      });
+      this.router.navigate(['/home']);
+    }
+    else {
+      window.alert('wrong credentials');
+    }
+  }
+
+  private delay(ms: number)
+  {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }

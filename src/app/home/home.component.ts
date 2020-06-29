@@ -37,6 +37,10 @@ export class HomeComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.updateForm.controls; }
 
+  DeleteAccount(){
+    this.authenticationService.delete(this.authenticationService.currentUserValue.id);
+  }
+
   onSubmit() {
 
     // reset alerts on submit

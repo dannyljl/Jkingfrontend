@@ -1,16 +1,24 @@
+<div *ngIf="this.authenticationService.currentUserValue">
 <a [routerLink]="['/home']">
   <h1>Home</h1>
 </a>
-<a [routerLink]="['/guild',user.guildName]">
+</div>
+<div *ngIf="this.authenticationService.currentUserValue">
+<a [routerLink]="['/guild',this.authenticationService.currentUserValue.guildName]">
   <h1>Guild</h1>
 </a>
+</div>
+<div *ngIf="this.authenticationService.currentUserValue">
 <a [routerLink]="['/createguild']">
   <h1>create Guild</h1>
 </a>
+</div>
+<div *ngIf="this.authenticationService.currentUserValue">
 <a [routerLink]="['/gacha']">
   <h1>draw!</h1>
 </a>
-<div *ngIf="!authenticationService.currentUserValue">
+</div>
+<div *ngIf="!this.authenticationService.currentUserValue">
   <a [routerLink]="['/login']">
     <h2>Login</h2>
   </a>
@@ -18,7 +26,7 @@
     <h2>Register</h2>
   </a>
 </div>
-<div *ngIf="authenticationService.currentUserValue">
+<div *ngIf="this.authenticationService.currentUserValue">
   <a [routerLink]="['/logout']">
     <h2>logout</h2>
   </a>
