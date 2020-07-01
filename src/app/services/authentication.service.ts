@@ -57,8 +57,10 @@ export class AuthenticationService {
 
   delete(id: number) {
     console.log(id);
-    this.http.delete<boolean>(`${environment.authUrl}/user/${id}`, httpOptions);
-    console.log('does this pass?');
+    this.http.delete<boolean>(`${environment.authUrl}/user/` + id, httpOptions).pipe(map(worked => {
+      console.log(worked);
+      console.log('does this pass?');
+    }));
     this.logout();
   }
 
